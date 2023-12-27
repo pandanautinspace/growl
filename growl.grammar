@@ -1,0 +1,49 @@
+file = statement* EOF
+
+statement =
+    | stmt EOS
+
+stmt =
+    | node_def
+    | import_stmt
+    | flow_stmt
+
+node_def = node_kw NAME? node_def_args? node_def_body
+
+node_def_args = ('(' (','.NAME)? ')')
+
+node_def_body = '{' statement* '}'
+
+node_kw = 
+    | 'transform'
+    | 'sink'
+    | 'source'
+
+import_stmt = 
+    | 'import' NAME
+    | 'import' NAME 'as' NAME
+
+flow_stmt = 
+    | io_flow_stmt
+    | i_flow_stmt
+    | o_flow_stmt
+    | d_flow_stmt
+
+i_flow_stmt = '->' d_flow_stmt
+
+o_flow_stmt = d_flow_stmt '->'
+
+io_flow_stmt = '->' d_flow_stmt '->'
+
+d_flow_stmt = flow i_flow*
+
+i_flow = '->' flow
+
+flow = 
+    | NAME
+    | literal
+    | '(' ','.flow_stmt ')'
+
+literal =
+    | NUMBER
+    | STRING

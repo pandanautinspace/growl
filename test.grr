@@ -1,0 +1,5 @@
+import io;
+transform main(args){
+    "Hello World!"->io_print;
+    0->;
+};
